@@ -21,15 +21,3 @@ public class ParametersContainer
     }
 
 }
-
-public class ValueContainer<Value>
-{
-
-    public Value value;
-
-    public ValueContainer(Value value)
-    {
-        this.value = value;
-    }
-
-}
