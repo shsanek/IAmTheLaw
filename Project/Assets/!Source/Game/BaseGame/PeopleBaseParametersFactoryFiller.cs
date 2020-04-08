@@ -13,7 +13,7 @@ public class PeopleBaseParametersFactoryFiller
 
     public static void Fill(BaseParametersFactory factory)
     {
-
+        factory.AddElement(PeopleBaseKey.year, () => { return new DoubleValueContainer(); });
     }
 
 }
