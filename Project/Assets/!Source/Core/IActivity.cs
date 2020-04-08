@@ -2,8 +2,8 @@
 public interface IActivity
 {
 
-    void willStart(GameContext context);
-    void loop(int iterationNumber);
-    void didEnd(GameContext context);
+    void WillStart(GameContext context);
+    void Loop(int iterationNumber);
+    void DidEnd(GameContext context);
 
 }

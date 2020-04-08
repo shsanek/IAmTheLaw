@@ -1,6 +1,11 @@
 ﻿public class People
 {
 
-    public readonly ParametersContainer containers = new ParametersContainer();
+    public readonly ParametersContainer containers;
+
+    public People(BaseParametersFactory factory)
+    {
+        this.containers = new ParametersContainer(factory);
+    }
 
 }

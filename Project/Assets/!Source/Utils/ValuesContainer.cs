@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine.Assertions;
 
 // тут будут огранечения на контейнеры
 public interface IValueContainer
@@ -9,14 +10,22 @@ public interface IValueContainer
 public class ParametersContainer
 {
 
+    private BaseParametersFactory factory;
     private Dictionary<string, IValueContainer> containers = new Dictionary<string, IValueContainer>();
 
-    public ResultType fetch<ResultType>(string identifier, Func<ResultType> maker) where ResultType : IValueContainer
+    public ParametersContainer(BaseParametersFactory factory)
+    {
+        this.factory = factory;
+    }
+
+    public ResultType Fetch<ResultType>(string identifier) where ResultType: IValueContainer
     {
         if (containers.ContainsKey(identifier) == false)
         {
-            containers[identifier] = maker();
+            containers[identifier] = factory.Make<ResultType>(identifier);
         }
+        IValueContainer result = containers[identifier];
+        Assert.IsTrue(result is ResultType);
         return (ResultType)this.containers[identifier];
     }
 
