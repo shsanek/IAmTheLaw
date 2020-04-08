@@ -10,6 +10,7 @@
             end
         }
 
+        internal readonly string identifier;
 
         private IActivity activity;
         private State state = State.watingForStart;
@@ -17,6 +18,7 @@
 
         internal ActivityExecutor(IActivity activity)
         {
+            this.identifier = activity.identifier;
             this.activity = activity;
         }
 

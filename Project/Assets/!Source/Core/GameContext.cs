@@ -13,12 +13,14 @@ namespace GameCore
         public readonly ParametersContainer global;
 
         public int stepInYear = 4;
+        public int currentStep { get; internal set; } = 0;
+
+        internal List<ActivityExecutor> activityExecutors = new List<ActivityExecutor>();
 
         private BaseParametersFactory peopleParametersFactory;
-
         private List<People> peopls = new List<People>();
-        private List<People> newPeoples = new List<People>();
-        private List<People> removePeoples = new List<People>();
+        private List<People> newPeopls = new List<People>();
+        private List<People> removePeopls = new List<People>();
         private int peopleHandlerCount = 0;
         private int peopleTransactionCount = 0;
         private List<PeopleHandler> handlers = new List<PeopleHandler>();
@@ -37,7 +39,7 @@ namespace GameCore
             }
             else
             {
-                newPeoples.Remove(people);
+                removePeopls.Add(people);
             }
         }
 
@@ -50,7 +52,7 @@ namespace GameCore
             }
             else
             {
-                newPeoples.Add(people);
+                newPeopls.Add(people);
             }
             return people;
         }
@@ -65,16 +67,16 @@ namespace GameCore
             this.peopleHandlerCount--;
             if (this.peopleHandlerCount == 0)
             {
-                foreach (var people in this.newPeoples)
+                foreach (var people in this.newPeopls)
                 {
                     peopls.Add(people);
                 }
-                foreach (var people in this.removePeoples)
+                foreach (var people in this.removePeopls)
                 {
                     peopls.Remove(people);
                 }
-                this.newPeoples = new List<People>();
-                this.removePeoples = new List<People>();
+                this.newPeopls = new List<People>();
+                this.removePeopls = new List<People>();
             }
         }
 
@@ -106,6 +108,24 @@ namespace GameCore
         public void AddPeopleHandlerInTransaction(PeopleHandler handler)
         {
             this.handlers.Add(handler);
+        }
+
+        public bool ContainsWithIdentifier(string identifier)
+        {
+            foreach (var activity in activityExecutors)
+            {
+                if (activity.identifier == identifier)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        internal void AddActivity(IActivity activity)
+        {
+            Assert.IsFalse(ContainsWithIdentifier(activity.identifier));
+            this.activityExecutors.Add(new ActivityExecutor(activity));
         }
 
         internal void BeginPeopleHandlingTransaction()

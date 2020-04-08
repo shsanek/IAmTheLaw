@@ -10,6 +10,7 @@ public class BaseContextBuilder
         GlobalBaseParametersFactoryFiller.Fill(globalFactory);
         PeopleBaseParametersFactoryFiller.Fill(peopleFactory);
         var context = new GameContext(globalFactory, peopleFactory);
+        BaseContextActivityFiller.Fill(context);
         return context;
     }
 
