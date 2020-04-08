@@ -4,7 +4,7 @@ public class BaseContextActivityFiller
     
     public static void Fill(GameContext context)
     {
-        //context.AddActivity(myActivity);
+        context.AddActivity(new PeoplsPopulationActivity());
     }
 
 }

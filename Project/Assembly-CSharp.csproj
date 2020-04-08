@@ -61,6 +61,7 @@
     <Compile Include="Assets\!Source\Core\IActivity.cs" />
     <Compile Include="Assets\!Source\Core\People.cs" />
     <Compile Include="Assets\!Source\Core\RunLoop.cs" />
+    <Compile Include="Assets\!Source\Game\Activities\PeoplsPopulationActivity.cs" />
     <Compile Include="Assets\!Source\Game\BaseGame\BaseContextActivityFiller.cs" />
     <Compile Include="Assets\!Source\Game\BaseGame\BaseContextBuilder.cs" />
     <Compile Include="Assets\!Source\Game\BaseGame\GlobalBaseParametersFactoryFiller.cs" />
