@@ -1,9 +1,15 @@
-﻿
-public interface IActivity
+﻿namespace GameCore
 {
 
-    void WillStart(GameContext context);
-    void Loop(int iterationNumber);
-    void DidEnd(GameContext context);
+    public delegate void ActivityStopHandler();
+    public interface IActivity
+    {
+        public string identifier { get; }
+        public bool CheckConditionsForStarting(GameContext context);
+        public void WillStart(GameContext context);
+        public void Loop(GameContext context, int step, ActivityStopHandler stopHandler);
+        public void DidEnd(GameContext context);
+
+    }
 
 }

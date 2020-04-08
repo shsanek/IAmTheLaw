@@ -56,6 +56,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\!Source\Core\ActivityExecutor.cs" />
     <Compile Include="Assets\!Source\Core\GameContext.cs" />
     <Compile Include="Assets\!Source\Core\IActivity.cs" />
     <Compile Include="Assets\!Source\Core\People.cs" />

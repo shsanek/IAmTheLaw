@@ -1,6 +1,10 @@
-﻿public class DoubleValueContainer: IValueContainer
+﻿namespace GameUtils
 {
+    public class DoubleValueContainer : IValueContainer
+    {
 
-    public double value = 0;
+        public double value = 0;
+
+    }
 
 }

@@ -1,147 +1,153 @@
 ﻿using System.Collections.Generic;
 using UnityEngine.Assertions;
+using GameUtils;
 
-
-public class GameContext
+namespace GameCore
 {
-
-    public delegate void PeopleHandler(People people);
-    public delegate bool PeopleFilter(People people);
-
-    public readonly ParametersContainer global;
-
-    private BaseParametersFactory peopleParametersFactory;
-
-    private List<People> peopls = new List<People>();
-    private List<People> newPeoples = new List<People>();
-    private List<People> removePeoples = new List<People>();
-    private int peopleHandlerCount = 0;
-    private int peopleTransactionCount = 0;
-    private List<PeopleHandler> handlers = new List<PeopleHandler>();
-
-    public GameContext(BaseParametersFactory globalParametersFactory, BaseParametersFactory peopleParametersFactory)
+    public class GameContext
     {
-        this.peopleParametersFactory = peopleParametersFactory;
-        this.global = new ParametersContainer(globalParametersFactory);
-    }
 
-    public void Kill(People people)
-    {
-        if (peopleHandlerCount == 0)
-        {
-            peopls.Remove(people);
-        }
-        else
-        {
-            newPeoples.Remove(people);
-        }
-    }
+        public delegate void PeopleHandler(People people);
+        public delegate bool PeopleFilter(People people);
 
-    public People AddPeople()
-    {
-        var people = new People(this.peopleParametersFactory);
-        if (peopleHandlerCount == 0)
-        {
-            peopls.Add(people);
-        }
-        else
-        {
-            newPeoples.Add(people);
-        }
-        return people;
-    }
+        public readonly ParametersContainer global;
 
-    public void PeoplsForeach(PeopleHandler handler)
-    {
-        this.peopleHandlerCount ++;
-        foreach (var people in this.peopls)
+        public int stepInYear = 4;
+
+        private BaseParametersFactory peopleParametersFactory;
+
+        private List<People> peopls = new List<People>();
+        private List<People> newPeoples = new List<People>();
+        private List<People> removePeoples = new List<People>();
+        private int peopleHandlerCount = 0;
+        private int peopleTransactionCount = 0;
+        private List<PeopleHandler> handlers = new List<PeopleHandler>();
+
+        public GameContext(BaseParametersFactory globalParametersFactory, BaseParametersFactory peopleParametersFactory)
         {
-            handler(people);
+            this.peopleParametersFactory = peopleParametersFactory;
+            this.global = new ParametersContainer(globalParametersFactory);
         }
-        this.peopleHandlerCount --;
-        if( this.peopleHandlerCount == 0)
+
+        public void Kill(People people)
         {
-            foreach (var people in this.newPeoples)
-            {
-                peopls.Add(people);
-            }
-            foreach (var people in this.removePeoples)
+            if (peopleHandlerCount == 0)
             {
                 peopls.Remove(people);
             }
-            this.newPeoples = new List<People>();
-            this.removePeoples = new List<People>();
-        }
-    }
-
-    public List<People> FilterPeopls(PeopleFilter filter)
-    {
-        var result = new List<People>();
-        foreach (var people in this.peopls)
-        {   
-            if (filter(people))
+            else
             {
-                result.Add(people);
+                newPeoples.Remove(people);
             }
         }
-        return result;
-    }
 
-    public People SearchPeopl(PeopleFilter filter)
-    {
-        foreach (var people in this.peopls)
+        public People AddPeople()
         {
-            if (filter(people))
+            var people = new People(this.peopleParametersFactory);
+            if (peopleHandlerCount == 0)
             {
-                return people;
+                peopls.Add(people);
             }
-        }
-        return null;
-    }
-
-    public void BeginPeopleHandlingTransaction()
-    {
-        this.peopleTransactionCount++;
-    }
-
-    public void AddPeopleHandlerInTransaction(PeopleHandler handler)
-    {
-        this.handlers.Add(handler);
-    }
-
-    public void CommitPeopleHandlingTransaction()
-    {
-        this.peopleTransactionCount--;
-        Assert.IsTrue(this.peopleTransactionCount >= 0);
-        if (this.peopleTransactionCount == 0)
-        {
-            void handler(People people)
+            else
             {
-                foreach (var handler in this.handlers)
+                newPeoples.Add(people);
+            }
+            return people;
+        }
+
+        public void PeoplsForeach(PeopleHandler handler)
+        {
+            this.peopleHandlerCount++;
+            foreach (var people in this.peopls)
+            {
+                handler(people);
+            }
+            this.peopleHandlerCount--;
+            if (this.peopleHandlerCount == 0)
+            {
+                foreach (var people in this.newPeoples)
                 {
-                    handler(people);
+                    peopls.Add(people);
+                }
+                foreach (var people in this.removePeoples)
+                {
+                    peopls.Remove(people);
+                }
+                this.newPeoples = new List<People>();
+                this.removePeoples = new List<People>();
+            }
+        }
+
+        public List<People> FilterPeopls(PeopleFilter filter)
+        {
+            var result = new List<People>();
+            foreach (var people in this.peopls)
+            {
+                if (filter(people))
+                {
+                    result.Add(people);
                 }
             }
-            this.PeoplsForeach(handler);
-            this.handlers = new List<PeopleHandler>();
+            return result;
         }
-        if (this.peopleTransactionCount < 0)
-        {
-            this.peopleTransactionCount = 0;
-        }
-    }
 
-    public void CommitAllPeopleHandlingTransactions()
-    {
-        Assert.IsTrue(this.peopleTransactionCount != 0);
-        while (this.peopleTransactionCount > 0)
+        public People SearchPeopl(PeopleFilter filter)
         {
-            this.CommitPeopleHandlingTransaction();
+            foreach (var people in this.peopls)
+            {
+                if (filter(people))
+                {
+                    return people;
+                }
+            }
+            return null;
         }
-        if (this.peopleTransactionCount < 0)
+
+        public void AddPeopleHandlerInTransaction(PeopleHandler handler)
         {
-            this.peopleTransactionCount = 0;
+            this.handlers.Add(handler);
         }
+
+        internal void BeginPeopleHandlingTransaction()
+        {
+            this.peopleTransactionCount++;
+        }
+
+        internal void CommitPeopleHandlingTransaction()
+        {
+            this.peopleTransactionCount--;
+            Assert.IsTrue(this.peopleTransactionCount >= 0);
+            if (this.peopleTransactionCount == 0)
+            {
+                void handler(People people)
+                {
+                    foreach (var handler in this.handlers)
+                    {
+                        handler(people);
+                    }
+                }
+                this.PeoplsForeach(handler);
+                this.handlers = new List<PeopleHandler>();
+            }
+            if (this.peopleTransactionCount < 0)
+            {
+                this.peopleTransactionCount = 0;
+            }
+        }
+
+        internal void CommitAllPeopleHandlingTransactions()
+        {
+            Assert.IsTrue(this.peopleTransactionCount != 0);
+            while (this.peopleTransactionCount > 0)
+            {
+                this.CommitPeopleHandlingTransaction();
+            }
+            if (this.peopleTransactionCount < 0)
+            {
+                this.peopleTransactionCount = 0;
+            }
+        }
+
     }
 
 }

@@ -2,31 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine.Assertions;
 
-// тут будут огранечения на контейнеры
-public interface IValueContainer
+namespace GameUtils
 {
-}
-
-public class ParametersContainer
-{
-
-    private BaseParametersFactory factory;
-    private Dictionary<string, IValueContainer> containers = new Dictionary<string, IValueContainer>();
-
-    public ParametersContainer(BaseParametersFactory factory)
+    // тут будут огранечения на контейнеры
+    public interface IValueContainer
     {
-        this.factory = factory;
     }
 
-    public ResultType Fetch<ResultType>(string identifier) where ResultType: IValueContainer
+    public class ParametersContainer
     {
-        if (containers.ContainsKey(identifier) == false)
+
+        private BaseParametersFactory factory;
+        private Dictionary<string, IValueContainer> containers = new Dictionary<string, IValueContainer>();
+
+        public ParametersContainer(BaseParametersFactory factory)
         {
-            containers[identifier] = factory.Make<ResultType>(identifier);
+            this.factory = factory;
         }
-        IValueContainer result = containers[identifier];
-        Assert.IsTrue(result is ResultType);
-        return (ResultType)this.containers[identifier];
+
+        public ResultType Fetch<ResultType>(string identifier) where ResultType : IValueContainer
+        {
+            if (containers.ContainsKey(identifier) == false)
+            {
+                containers[identifier] = factory.Make<ResultType>(identifier);
+            }
+            IValueContainer result = containers[identifier];
+            Assert.IsTrue(result is ResultType);
+            return (ResultType)this.containers[identifier];
+        }
+
     }
 
 }

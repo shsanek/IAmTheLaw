@@ -2,47 +2,51 @@
 using System.Collections.Generic;
 using UnityEngine.Assertions;
 
-public class BaseParametersFactory
+namespace GameUtils
 {
-
-    private List<ParameterContainer> containers = new List<ParameterContainer>();
-
-    public ResultType Make<ResultType>(string identifier) where ResultType: IValueContainer
+    public class BaseParametersFactory
     {
-        foreach (ParameterContainer container in containers)
+
+        private List<ParameterContainer> containers = new List<ParameterContainer>();
+
+        public ResultType Make<ResultType>(string identifier) where ResultType : IValueContainer
         {
-            if (container.identifier == identifier)
+            foreach (ParameterContainer container in containers)
             {
-                object result = container.maker();
-                Assert.IsTrue(result is ResultType);
-                return (ResultType)result;
+                if (container.identifier == identifier)
+                {
+                    object result = container.maker();
+                    Assert.IsTrue(result is ResultType);
+                    return (ResultType)result;
+                }
             }
+            Assert.IsTrue(false);
+            return default;
         }
-        Assert.IsTrue(false);
-        return default;
-    }
 
-    public void AddElement(string identifier, Func<IValueContainer> maker)
-    {
-        foreach (ParameterContainer container in containers)
+        public void AddElement(string identifier, Func<IValueContainer> maker)
         {
-            Assert.IsTrue(container.identifier != identifier);
+            foreach (ParameterContainer container in containers)
+            {
+                Assert.IsTrue(container.identifier != identifier);
+            }
+            containers.Add(new ParameterContainer(identifier, maker));
         }
-        containers.Add(new ParameterContainer(identifier, maker));
+
     }
 
-}
-
-public class ParameterContainer
-{
-
-    internal string identifier;
-    internal Func<IValueContainer> maker;
-
-    internal ParameterContainer(string identifier, Func<IValueContainer> maker)
+    public class ParameterContainer
     {
-        this.identifier = identifier;
-        this.maker = maker;
+
+        internal string identifier;
+        internal Func<IValueContainer> maker;
+
+        internal ParameterContainer(string identifier, Func<IValueContainer> maker)
+        {
+            this.identifier = identifier;
+            this.maker = maker;
+        }
+
     }
 
 }
