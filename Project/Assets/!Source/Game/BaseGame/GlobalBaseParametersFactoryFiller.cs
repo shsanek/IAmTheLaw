@@ -1,5 +1,5 @@
 ﻿using ParametersConstant;
-using GameUtils;
+using GameCore;
 
 namespace ParametersConstant
 {
@@ -14,7 +14,6 @@ public class GlobalBaseParametersFactoryFiller
 
     public static void Fill(BaseParametersFactory factory)
     {
-
     }
 
 }

@@ -4,11 +4,11 @@
     public delegate void ActivityStopHandler();
     public interface IActivity
     {
-        public string identifier { get; }
-        public bool CheckConditionsForStarting(GameContext context);
-        public void WillStart(GameContext context);
-        public void Loop(GameContext context, int step, ActivityStopHandler stopHandler);
-        public void DidEnd(GameContext context);
+        string identifier { get; }
+        bool CheckConditionsForStarting(GameContext context);
+        void WillStart(GameContext context);
+        void Loop(GameContext context, int step, ActivityStopHandler stopHandler);
+        void DidEnd(GameContext context);
 
     }
 

@@ -1,5 +1,5 @@
 ﻿using ParametersConstant;
-using GameUtils;
+using GameCore;
 
 namespace ParametersConstant
 {

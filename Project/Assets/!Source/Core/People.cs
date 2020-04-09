@@ -1,15 +1,13 @@
-﻿using GameUtils;
-
-namespace GameCore
+﻿namespace GameCore
 {
     public class People
     {
 
-        public readonly ParametersContainer containers;
+        public readonly ValuesContainerStorage storage;
 
         public People(BaseParametersFactory factory)
         {
-            this.containers = new ParametersContainer(factory);
+            this.storage = new ValuesContainerStorage(factory);
         }
 
     }

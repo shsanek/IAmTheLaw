@@ -1,9 +1,8 @@
 ﻿using GameCore;
-using GameUtils;
-
 public class PeoplsPopulationActivity : IActivity
 {
-    public string identifier = "PeoplsPopulationActivityIdentifier";
+
+    string IActivity.identifier => "PeoplsPopulationActivityIdentifier";
 
     public bool CheckConditionsForStarting(GameContext context)
     {

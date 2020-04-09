@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine.Assertions;
-using GameUtils;
+using System;
 
 namespace GameCore
 {
@@ -10,57 +10,81 @@ namespace GameCore
         public delegate void PeopleHandler(People people);
         public delegate bool PeopleFilter(People people);
 
-        public readonly ParametersContainer global;
+        public readonly ValuesContainerStorage storage;
 
-        public int stepInYear = 4;
+        public readonly int stepInYear = 4;
+        public double stepLength { get { return 1.0 / Convert.ToDouble(this.stepInYear); } }
+        public double currentYear { get { return this.stepLength / Convert.ToDouble(this.currentStep); } }
         public int currentStep { get; internal set; } = 0;
 
-        internal List<ActivityExecutor> activityExecutors = new List<ActivityExecutor>();
+        public IReadOnlyList<People> allNewPeopls { get { return this._allNewPeopls; } }
+        public IReadOnlyList<People> allRemovePeopls { get { return this._allRemovePeopls; } }
+        public IReadOnlyList<People> peopls { get { return this._peopls; } }
 
         private BaseParametersFactory peopleParametersFactory;
-        private List<People> peopls = new List<People>();
         private List<People> newPeopls = new List<People>();
         private List<People> removePeopls = new List<People>();
         private int peopleHandlerCount = 0;
         private int peopleTransactionCount = 0;
         private List<PeopleHandler> handlers = new List<PeopleHandler>();
+        private bool stateStep = true;
+
+        private List<People> _allNewPeopls = new List<People>();
+        private List<People> _allRemovePeopls = new List<People>();
+        private List<People> _peopls = new List<People>();
 
         public GameContext(BaseParametersFactory globalParametersFactory, BaseParametersFactory peopleParametersFactory)
         {
             this.peopleParametersFactory = peopleParametersFactory;
-            this.global = new ParametersContainer(globalParametersFactory);
+            this.storage = new ValuesContainerStorage(globalParametersFactory);
         }
 
         public void Kill(People people)
         {
+            Assert.IsTrue(this.stateStep);
             if (peopleHandlerCount == 0)
             {
-                peopls.Remove(people);
+                _peopls.Remove(people);
             }
             else
             {
                 removePeopls.Add(people);
             }
+            this._allRemovePeopls.Add(people);
         }
 
         public People AddPeople()
         {
+            Assert.IsTrue(this.stateStep);
             var people = new People(this.peopleParametersFactory);
             if (peopleHandlerCount == 0)
             {
-                peopls.Add(people);
+                _peopls.Add(people);
             }
             else
             {
                 newPeopls.Add(people);
             }
+            this._allNewPeopls.Add(people);
             return people;
+        }
+
+        internal void startStep()
+        {
+            this.removePeopls = new List<People>();
+            this.removePeopls = new List<People>();
+            this.stateStep = true;
+        }
+
+        internal void endStep()
+        {
+            this.stateStep = false;
         }
 
         public void PeoplsForeach(PeopleHandler handler)
         {
             this.peopleHandlerCount++;
-            foreach (var people in this.peopls)
+            foreach (var people in this._peopls)
             {
                 handler(people);
             }
@@ -69,11 +93,11 @@ namespace GameCore
             {
                 foreach (var people in this.newPeopls)
                 {
-                    peopls.Add(people);
+                    _peopls.Add(people);
                 }
                 foreach (var people in this.removePeopls)
                 {
-                    peopls.Remove(people);
+                    _peopls.Remove(people);
                 }
                 this.newPeopls = new List<People>();
                 this.removePeopls = new List<People>();
@@ -83,7 +107,7 @@ namespace GameCore
         public List<People> FilterPeopls(PeopleFilter filter)
         {
             var result = new List<People>();
-            foreach (var people in this.peopls)
+            foreach (var people in this._peopls)
             {
                 if (filter(people))
                 {
@@ -95,7 +119,7 @@ namespace GameCore
 
         public People SearchPeopl(PeopleFilter filter)
         {
-            foreach (var people in this.peopls)
+            foreach (var people in this._peopls)
             {
                 if (filter(people))
                 {
@@ -110,23 +134,6 @@ namespace GameCore
             this.handlers.Add(handler);
         }
 
-        public bool ContainsWithIdentifier(string identifier)
-        {
-            foreach (var activity in activityExecutors)
-            {
-                if (activity.identifier == identifier)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        internal void AddActivity(IActivity activity)
-        {
-            Assert.IsFalse(ContainsWithIdentifier(activity.identifier));
-            this.activityExecutors.Add(new ActivityExecutor(activity));
-        }
 
         internal void BeginPeopleHandlingTransaction()
         {
@@ -139,14 +146,14 @@ namespace GameCore
             Assert.IsTrue(this.peopleTransactionCount >= 0);
             if (this.peopleTransactionCount == 0)
             {
-                void handler(People people)
+                this.PeoplsForeach((people) =>
                 {
                     foreach (var handler in this.handlers)
                     {
                         handler(people);
                     }
-                }
-                this.PeoplsForeach(handler);
+                });
+
                 this.handlers = new List<PeopleHandler>();
             }
             if (this.peopleTransactionCount < 0)
