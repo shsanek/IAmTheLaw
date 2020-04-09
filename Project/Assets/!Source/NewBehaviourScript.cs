@@ -13,11 +13,13 @@ public class NewBehaviourScript : MyBaseMonoBehaviour
 	private RunLoop runLoop;
 	private Text bornText;
 	private Text deadText;
+	private Text peoplsText;
 
 	void Start () {
 		this.runLoop = BaseRunLoopBuilder.Build();
 		this.bornText = this.GetComponent<Text>("bornPeoplsText");
 		this.deadText = this.GetComponent<Text>("deadPeoplsText");
+		this.peoplsText = this.GetComponent<Text>("peoplsText");
 
 		var button = this.GetComponent<Button>("myButton");
 
@@ -30,6 +32,7 @@ public class NewBehaviourScript : MyBaseMonoBehaviour
 	
 	void Show()
 	{
+		this.peoplsText.text = $"Всего { this.runLoop.context.storage.Fetch<DoubleValueContainer>(GlobalBaseKey.numberOfPeopls).value}";
 		this.bornText.text = $"Родилось { this.runLoop.context.storage.Fetch<DoubleValueContainer>(GlobalBaseKey.numberOfBirths).value}";
 		this.deadText.text = $"Умерло { this.runLoop.context.storage.Fetch<DoubleValueContainer>(GlobalBaseKey.numberOfDeaths).value}";
 	}

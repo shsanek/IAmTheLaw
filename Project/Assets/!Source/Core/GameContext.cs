@@ -71,8 +71,8 @@ namespace GameCore
 
         internal void startStep()
         {
-            this.removePeopls = new List<People>();
-            this.removePeopls = new List<People>();
+            this._allNewPeopls = new List<People>();
+            this._allRemovePeopls = new List<People>();
             this.stateStep = true;
         }
 

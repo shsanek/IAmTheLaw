@@ -39,9 +39,9 @@ namespace GameCore
             var storageConfig = ValueStorageConfig.NotSave;
             foreach (ParameterContainer container in containers)
             {
-                if( container.identifier != identifier )
+                if( container.identifier == identifier )
                 {
-                    Debug.LogError(identifier);
+                    Debug.LogError($"тут ошибка { identifier }");
                     Assert.IsTrue(false);
                 }
             }

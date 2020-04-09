@@ -71,19 +71,21 @@
     <Compile Include="Assets\!Source\Game\Activities\PeopleStatisticsActivity.cs" />
     <Compile Include="Assets\!Source\Game\Activities\PeoplsPopulationActivity.cs" />
     <Compile Include="Assets\!Source\Game\BaseGame\BaseActivitiesFactory.cs" />
-    <Compile Include="Assets\!Source\Game\BaseGame\BaseRunLoopBuilder.cs" />
     <Compile Include="Assets\!Source\Game\BaseGame\BaseStatisticActivitiesFactory.cs" />
-    <Compile Include="Assets\!Source\Game\BaseGame\GlobalBaseParametersFactoryFiller.cs" />
-    <Compile Include="Assets\!Source\Game\BaseGame\PeopleBaseParametersFactoryFiller.cs" />
+    <Compile Include="Assets\!Source\Game\BaseRunLoopBuilder.cs" />
+    <Compile Include="Assets\!Source\Game\ParametersFactory\GlobalBaseParametersFactoryFiller.cs" />
+    <Compile Include="Assets\!Source\Game\ParametersFactory\PeopleBaseParametersFactoryFiller.cs" />
+    <Compile Include="Assets\!Source\Game\PeopleProxy\PeopleBaseProxy.cs" />
     <Compile Include="Assets\!Source\NewBehaviourScript.cs" />
-    <Compile Include="Assets\!Source\Utils\BaseParametersFactory.cs" />
+    <Compile Include="Assets\!Source\Utils\Containers\DistributionValueContainer.cs" />
     <Compile Include="Assets\!Source\Utils\Containers\DoubleValueContainer.cs" />
-    <Compile Include="Assets\!Source\Utils\IDataSorage.cs" />
-    <Compile Include="Assets\!Source\Utils\IValueContainer.cs" />
-    <Compile Include="Assets\!Source\Utils\LocalDataSorage.cs" />
-    <Compile Include="Assets\!Source\Utils\ValueStorage.cs" />
-    <Compile Include="Assets\!Source\Utils\ValueStorageConfig.cs" />
-    <Compile Include="Assets\!Source\Utils\ValuesContainerStorage.cs" />
+    <Compile Include="Assets\!Source\Utils\Storage\BaseParametersFactory.cs" />
+    <Compile Include="Assets\!Source\Utils\Storage\IDataSorage.cs" />
+    <Compile Include="Assets\!Source\Utils\Storage\IValueContainer.cs" />
+    <Compile Include="Assets\!Source\Utils\Storage\LocalDataSorage.cs" />
+    <Compile Include="Assets\!Source\Utils\Storage\ValueStorage.cs" />
+    <Compile Include="Assets\!Source\Utils\Storage\ValueStorageConfig.cs" />
+    <Compile Include="Assets\!Source\Utils\Storage\ValuesContainerStorage.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/ALEX/Documents/IAmTheLaw/Project/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

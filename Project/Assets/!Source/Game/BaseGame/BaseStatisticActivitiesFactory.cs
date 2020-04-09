@@ -7,6 +7,7 @@ public class BaseStatisticActivitiesFactory
     {
         List<IActivity> result = new List<IActivity>();
 
+        result.Add(new PeopleStatisticsActivity());
 
         return result;
     }
