@@ -14,6 +14,10 @@ public class PeoplsPopulationActivity : IActivity
         // смерть
     }
 
+    public void Load(GameContext context)
+    {
+    }
+
     public void Loop(GameContext context, int step, ActivityStopHandler stopHandler)
     {
         // регулировать популяцию

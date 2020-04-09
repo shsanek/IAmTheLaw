@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine.Assertions;
+using UnityEngine;
 
 namespace GameCore
 {
@@ -38,7 +39,11 @@ namespace GameCore
             var storageConfig = ValueStorageConfig.NotSave;
             foreach (ParameterContainer container in containers)
             {
-                Assert.IsTrue(container.identifier != identifier);
+                if( container.identifier != identifier )
+                {
+                    Debug.LogError(identifier);
+                    Assert.IsTrue(false);
+                }
             }
             containers.Add(new ParameterContainer(identifier, maker, storageConfig));
         }

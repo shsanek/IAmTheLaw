@@ -17,8 +17,8 @@ namespace GameCore
         public double currentYear { get { return this.stepLength / Convert.ToDouble(this.currentStep); } }
         public int currentStep { get; internal set; } = 0;
 
-        public IReadOnlyList<People> allNewPeopls { get { return this._allNewPeopls; } }
-        public IReadOnlyList<People> allRemovePeopls { get { return this._allRemovePeopls; } }
+        public IReadOnlyList<People> bornPeopls { get { return this._allNewPeopls; } }
+        public IReadOnlyList<People> deadPeopls { get { return this._allRemovePeopls; } }
         public IReadOnlyList<People> peopls { get { return this._peopls; } }
 
         private BaseParametersFactory peopleParametersFactory;

@@ -15,6 +15,7 @@
         private IActivity activity;
         private State state = State.watingForStart;
         private int currentStep = 0;
+        private bool isLoad = false;
 
         internal ActivityExecutor(IActivity activity)
         {
@@ -24,6 +25,11 @@
 
         internal void Run(GameContext context)
         {
+            if (isLoad == false)
+            {
+                isLoad = true;
+                this.activity.Load(context);
+            }
             switch( this.state )
             {
                 case State.end:

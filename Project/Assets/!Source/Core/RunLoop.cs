@@ -6,7 +6,7 @@ namespace GameCore
     public class RunLoop
     {
 
-        public GameContext context;
+        public readonly GameContext context;
 
         private List<ActivityExecutor> activityExecutors = new List<ActivityExecutor>();
         private List<ActivityExecutor> statisticExecutors = new List<ActivityExecutor>();
