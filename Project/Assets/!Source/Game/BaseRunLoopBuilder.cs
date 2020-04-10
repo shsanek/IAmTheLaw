@@ -6,9 +6,7 @@ public class BaseRunLoopBuilder
     {
         var globalFactory = new BaseParametersFactory();
         var peopleFactory = new BaseParametersFactory();
-        GlobalBaseParametersFactoryFiller.Fill(globalFactory);
-        PeopleBaseParametersFactoryFiller.Fill(peopleFactory);
-        var context = new GameContext(globalFactory, peopleFactory);
+        var context = new GameContext();
         var activities = BaseActivitiesFactory.activities();
         var statisticActivities = BaseStatisticActivitiesFactory.activities();
         return new RunLoop(context, activities, statisticActivities);

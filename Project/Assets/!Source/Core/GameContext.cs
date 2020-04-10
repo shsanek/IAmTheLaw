@@ -4,24 +4,36 @@ using System;
 
 namespace GameCore
 {
+
+
     public class GameContext
     {
 
         public delegate void PeopleHandler(People people);
         public delegate bool PeopleFilter(People people);
 
-        public readonly ValuesContainerStorage storage;
+        // изменяемые контейнеры
+        public readonly DoubleValueContainer numberOfDeaths = new DoubleValueContainer();
+        public readonly DoubleValueContainer numberOfBirths = new DoubleValueContainer();
+        public readonly DoubleValueContainer numberOfPeopls = new DoubleValueContainer();
+        public readonly DistributionValueContainer probabilityDistributionMaleDeath = new DistributionValueContainer();
 
+        // неизменяемые переиенные
         public readonly int stepInYear = 4;
         public double stepLength { get { return 1.0 / Convert.ToDouble(this.stepInYear); } }
         public double currentYear { get { return this.stepLength / Convert.ToDouble(this.currentStep); } }
         public int currentStep { get; internal set; } = 0;
 
+        // все люди родившиеся на текущем ходу
         public IReadOnlyList<People> bornPeopls { get { return this._allNewPeopls; } }
+
+        // все люди умершие на текущем ходу
         public IReadOnlyList<People> deadPeopls { get { return this._allRemovePeopls; } }
+
+        // все люди
         public IReadOnlyList<People> peopls { get { return this._peopls; } }
 
-        private BaseParametersFactory peopleParametersFactory;
+        //  приват
         private List<People> newPeopls = new List<People>();
         private List<People> removePeopls = new List<People>();
         private int peopleHandlerCount = 0;
@@ -33,10 +45,8 @@ namespace GameCore
         private List<People> _allRemovePeopls = new List<People>();
         private List<People> _peopls = new List<People>();
 
-        public GameContext(BaseParametersFactory globalParametersFactory, BaseParametersFactory peopleParametersFactory)
+        public GameContext()
         {
-            this.peopleParametersFactory = peopleParametersFactory;
-            this.storage = new ValuesContainerStorage(globalParametersFactory);
         }
 
         public void Kill(People people)
@@ -56,7 +66,7 @@ namespace GameCore
         public People AddPeople()
         {
             Assert.IsTrue(this.stateStep);
-            var people = new People(this.peopleParametersFactory);
+            var people = new People();
             if (peopleHandlerCount == 0)
             {
                 _peopls.Add(people);

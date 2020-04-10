@@ -73,12 +73,10 @@
     <Compile Include="Assets\!Source\Game\BaseGame\BaseActivitiesFactory.cs" />
     <Compile Include="Assets\!Source\Game\BaseGame\BaseStatisticActivitiesFactory.cs" />
     <Compile Include="Assets\!Source\Game\BaseRunLoopBuilder.cs" />
-    <Compile Include="Assets\!Source\Game\ParametersFactory\GlobalBaseParametersFactoryFiller.cs" />
-    <Compile Include="Assets\!Source\Game\ParametersFactory\PeopleBaseParametersFactoryFiller.cs" />
-    <Compile Include="Assets\!Source\Game\PeopleProxy\PeopleBaseProxy.cs" />
     <Compile Include="Assets\!Source\NewBehaviourScript.cs" />
     <Compile Include="Assets\!Source\Utils\Containers\DistributionValueContainer.cs" />
     <Compile Include="Assets\!Source\Utils\Containers\DoubleValueContainer.cs" />
+    <Compile Include="Assets\!Source\Utils\Containers\SexValueContainer.cs" />
     <Compile Include="Assets\!Source\Utils\Storage\BaseParametersFactory.cs" />
     <Compile Include="Assets\!Source\Utils\Storage\IDataSorage.cs" />
     <Compile Include="Assets\!Source\Utils\Storage\IValueContainer.cs" />

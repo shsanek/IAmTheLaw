@@ -3,7 +3,6 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 using GameCore;
-using ParametersConstant;
 
 public class NewBehaviourScript : MyBaseMonoBehaviour
 {
@@ -32,9 +31,9 @@ public class NewBehaviourScript : MyBaseMonoBehaviour
 	
 	void Show()
 	{
-		this.peoplsText.text = $"Всего { this.runLoop.context.storage.Fetch<DoubleValueContainer>(GlobalBaseKey.numberOfPeopls).value}";
-		this.bornText.text = $"Родилось { this.runLoop.context.storage.Fetch<DoubleValueContainer>(GlobalBaseKey.numberOfBirths).value}";
-		this.deadText.text = $"Умерло { this.runLoop.context.storage.Fetch<DoubleValueContainer>(GlobalBaseKey.numberOfDeaths).value}";
+		this.peoplsText.text = $"Всего { this.runLoop.context.numberOfPeopls.value}";
+		this.bornText.text = $"Родилось { this.runLoop.context.numberOfBirths.value}";
+		this.deadText.text = $"Умерло { this.runLoop.context.numberOfDeaths.value}";
 	}
 	// Update is called once per frame
 	void Update ()

@@ -1,13 +1,13 @@
 ﻿namespace GameCore
 {
+
     public class People
     {
 
-        public readonly ValuesContainerStorage storage;
-
-        public People(BaseParametersFactory factory)
+        public readonly DoubleValueContainer age = new DoubleValueContainer();
+        public readonly SexValueContainer sex = new SexValueContainer();
+        public People()
         {
-            this.storage = new ValuesContainerStorage(factory);
         }
 
     }
