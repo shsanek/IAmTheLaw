@@ -39,11 +39,14 @@ public class PeoplsPopulationActivity : IActivity
 
     public void WillStart(GameContext context)
     {
+        double[][] array = { new double[] { 1, 966 }, new double[] { 4, 3958 }, new double[] { 5, 4389 }, new double[] { 5, 3791 }, new double[] { 5, 3418 }, new double[] { 5, 3993 }, new double[] { 5, 6035 }, new double[] { 5, 6270 }, new double[] { 5, 5505 }, new double[] { 5, 5008 }, new double[] { 5, 4439 }, new double[] { 5, 4545 }, new double[] { 5, 4947 }, new double[] { 5, 3964 }, new double[] { 5, 2942 }, new double[] { 41, 3874 } };
+        var ras = new DistributionValueContainer();
+        ras.setDestibution(1.0, array);
         var random = new Random();
         for (int i = 0; i < 15000; i++)
         {
             var people = context.AddPeople();
-            people.age.value = random.NextDouble() * 100;
+            people.age.value = ras.fetchRange(random.NextDouble());
         }
     }
 }
